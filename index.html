@@ -159,6 +159,8 @@ section { position: relative; }
 footer { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px 30px; margin-top: 119px; padding-top: 19px; border-top: 1px solid var(--ash); }
 
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .display .ln span, .orb, .fl > * { animation: none; } .fl { transition: none; } .win iframe { transition: none; } }
+.allw { margin-top: 46px; display: flex; align-items: center; gap: 19px 24px; flex-wrap: wrap; }
+.allw .kind { margin: 0; font-size: 15px; }
 </style>
 </head>
 <body>
@@ -212,6 +214,7 @@ footer { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8p
   <div class="wrap">
     <span class="label">Trabajo destacado</span>
     <div class="works" id="works"></div>
+    <div class="allw"><a class="pillbtn" href="paginas.html" target="_blank" rel="noopener">Ver todas las páginas web <span aria-hidden="true">→</span></a><p class="kind">10 páginas organizadas por tipo de negocio.</p></div>
   </div>
 </section>
 
@@ -262,11 +265,11 @@ footer { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8p
   /* Proyectos. Cada "parte" muestra una zona distinta de la misma página en vivo.
      y = [escritorio, celular]: cuántos píxeles bajar dentro de la página. */
   var PROJECTS = [
-    { title: 'Mordisco', kind: 'Hamburguesería con menú, combos y locales', url: 'https://mordisco-two.vercel.app/',
-      parts: [{ l: 'Inicio', y: [0, 0] }] },
     { title: 'Algarrobo', kind: 'Restaurante con carta, reservas por WhatsApp y transiciones', url: 'https://algarrobo-psi.vercel.app/',
       parts: [{ l: 'Inicio', y: [0, 0] }] },
-    { title: 'Cevichería 635', kind: 'Carta con platos en 3D y reservas por WhatsApp', url: 'https://pagina5-gilt.vercel.app/',
+    { title: 'Mordisco', kind: 'Hamburguesería con menú, combos y locales', url: 'https://mordisco-two.vercel.app/',
+      parts: [{ l: 'Inicio', y: [0, 0] }] },
+    { title: 'PIMA', kind: 'Tienda de ropa con bolsa de compras y pedido por WhatsApp', url: 'https://pima-silk.vercel.app/',
       parts: [{ l: 'Inicio', y: [0, 0] }] },
     { title: 'norte.', kind: 'Tienda con carrito y pedido por WhatsApp', url: 'https://norte-six-gamma.vercel.app/',
       parts: [{ l: 'Inicio', y: [0, 0] }, { l: 'Categorías', y: [650, 520] }, { l: 'Catálogo', y: [1060, 925] }] }
@@ -504,14 +507,14 @@ html.lg-lock{overflow:hidden}
   function show(x){ if(!x.open){x.showModal();root.classList.add('lg-lock');var b=$('.lg-b',x);if(b)b.scrollTop=0;} }
   d.addEventListener('click',function(e){
     var b=e.target.closest('[data-lg]');
-    if(b){e.preventDefault();var w=b.getAttribute('data-lg');if(R.open){R.close()}if(P.open){P.close()}show(w==='rec'?R:P);return;}
+    if(b){var w=b.getAttribute('data-lg'),T=$('#lg-'+w);if(T&&T.tagName==='DIALOG'){e.preventDefault();$$('dialog.lg[open]').forEach(function(o){o.close()});show(T);return;}}
     if(e.target.closest('.lg-linkpriv')){R.close();show(P);return;}
     var x=e.target.closest('.lg-x');if(x){x.closest('dialog').close();return;}
     if(e.target.tagName==='DIALOG'){var r=e.target.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)e.target.close();}
   });
-  [P,R].forEach(function(x){x.addEventListener('close',function(){if(!P.open&&!R.open)root.classList.remove('lg-lock')})});
+  $$('dialog.lg').forEach(function(x){x.addEventListener('close',function(){if(!$('dialog.lg[open]'))root.classList.remove('lg-lock')})});
   $$('.lg-wa').forEach(function(a){a.href='https://wa.me/'+CFG.wa+'?text='+encodeURIComponent('Hola '+CFG.nombre+', tengo una consulta sobre mis datos personales.');a.target='_blank';a.rel='noopener'});
-  var h=location.hash;if(h==='#politica-de-privacidad')show(P);if(h==='#libro-de-reclamaciones')show(R);
+  var h=location.hash;if(h==='#politica-de-privacidad')show(P);if(h==='#libro-de-reclamaciones')show(R);if(h==='#terminos-y-condiciones'&&$('#lg-ter'))show($('#lg-ter'));
 
   var f=$('#lg-form'),err=$('#lg-err'),done=$('#lg-done');
   function key(){return 'lg-n-'+CFG.slug}
